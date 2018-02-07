@@ -1,0 +1,17 @@
+{
+  "name": "my-awesome-bot",
+  "version": "0.1.0",
+  "description": "my awesome bot",
+  "license": "MIT",
+  "scripts": {
+    "upgrade": "yarn-upgrade-all",
+    "test": "node index.js"
+  },
+  "dependencies": {
+    "ringcentral-js-concise": "^0.3.4"
+  },
+  "devDependencies": {
+    "standard": "^10.0.3",
+    "yarn-upgrade-all": "^0.3.0"
+  }
+}
