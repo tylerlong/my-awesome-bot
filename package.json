@@ -8,6 +8,7 @@
     "test": "node index.js"
   },
   "dependencies": {
+    "dotenv": "^5.0.0",
     "ringcentral-js-concise": "^0.3.4"
   },
   "devDependencies": {
