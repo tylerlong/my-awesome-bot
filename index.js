@@ -1,15 +1,20 @@
-const RingCentral = require('ringcentral-js-concise')
+const RingCentral = require('ringcentral')
 const dotenv = require('dotenv')
 
 dotenv.config()
 const token = JSON.parse(process.env.token)
-const rc = new RingCentral('', '', RingCentral.SANDBOX_SERVER)
-rc.token(token)
+const rc = new RingCentral({
+  server: RingCentral.server.sandbox,
+  appKey: '',
+  appSecret: ''
+})
+rc.platform().auth().setData(token)
 
-const pubnub = rc.pubnub(['/restapi/v1.0/glip/posts'], message => {
+const subscription = rc.createSubscription()
+subscription.on(subscription.events.notification, message => {
   if (message.body.creatorId !== token.owner_id) { // not a message from the bot
     if (message.body.text === 'ping') {
-      rc.post('/restapi/v1.0/glip/posts', {
+      rc.platform().post('/glip/posts', {
         groupId: message.body.groupId,
         text: 'pong',
         attachments: undefined
@@ -17,5 +22,6 @@ const pubnub = rc.pubnub(['/restapi/v1.0/glip/posts'], message => {
     }
   }
 })
-
-pubnub.subscribe()
+subscription.setEventFilters(['/glip/posts']).register().then(() => {
+  console.log('subscription registered')
+})
